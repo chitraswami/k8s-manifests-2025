@@ -1,0 +1,56 @@
+---
+# Source: alphatechx/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alphatechx
+  labels:
+    helm.sh/chart: alphatechx-0.1.0
+    app.kubernetes.io/name: alphatechx
+    app.kubernetes.io/instance: alphatechx
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alphatechx
+      app.kubernetes.io/instance: alphatechx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alphatechx
+        app.kubernetes.io/instance: alphatechx
+    spec:
+      containers:
+        - name: alphatechx
+          image: "chitraswami/alphatechx:4"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "5000"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi

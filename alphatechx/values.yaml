@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: chitraswami/alphatechx
-  tag: "latest"
+  tag: 4
   pullPolicy: IfNotPresent
 
 service:

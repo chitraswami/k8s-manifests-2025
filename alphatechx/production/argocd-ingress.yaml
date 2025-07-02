@@ -1,0 +1,27 @@
+---
+# Source: alphatechx/templates/argocd-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alphatechx-ingress
+  labels:
+    helm.sh/chart: alphatechx-0.1.0
+    app.kubernetes.io/name: alphatechx
+    app.kubernetes.io/instance: alphatechx
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ""
+      http:
+        paths:
+          - path: /alphatechx/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: alphatechx
+                port:
+                  number: 5000
